@@ -1,7 +1,7 @@
 ---
 title: "Simple Models"
 author: "Mike Calabro"
-format: html
+format: pdf
 editor: visual
 execute:
   warning: FALSE
