@@ -71,3 +71,9 @@ fig <- plot_ly(iris, x = ~sepal_length, y = ~sepal_width, z = ~petal_width, colo
 fig <- fig %>% add_markers()
 fig
 ```
+
+```{r}
+iris %>%
+  ggplot(aes(x = species, y = petal_length, fill = species)) +
+  geom_boxplot()
+```
