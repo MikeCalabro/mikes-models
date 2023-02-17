@@ -1,0 +1,73 @@
+---
+title: "Iris Exploratory Data Analysis"
+author: "Mike Calabro"
+format: html
+editor: visual
+execute: 
+  message: FALSE
+  warning: FALSE
+---
+
+## Iris Data
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(stringr)
+library(janitor)
+library(kableExtra)
+library(plotly)
+tidymodels_prefer()
+
+iris <- iris %>% clean_names()
+
+iris %>%
+  head() %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{r}
+iris %>%
+  ggplot(aes(x = species, y = sepal_length, fill = species)) +
+  geom_boxplot() +
+  theme(legend.position = "none")
+```
+
+```{r}
+iris %>%
+  ggplot(aes(x = species, y = sepal_width, fill = species)) +
+  geom_boxplot() +
+  theme(legend.position = "none")
+```
+
+```{r}
+iris %>%
+  ggplot(aes(x = sepal_length, y = sepal_width, color = species)) +
+  geom_point()
+```
+
+```{r}
+iris %>%
+  ggplot(aes(x = species, y = petal_width, fill = species)) +
+  geom_boxplot() +
+  theme(legend.position = "none")
+```
+
+```{r}
+iris %>%
+  ggplot(aes(x = sepal_length, y = petal_width, color = species)) +
+  geom_point()
+```
+
+```{r}
+iris %>%
+  ggplot(aes(x = petal_width, y = sepal_width, color = species)) +
+  geom_point()
+```
+
+```{r}
+fig <- plot_ly(iris, x = ~sepal_length, y = ~sepal_width, z = ~petal_width, color = ~species, colors = c('red3', 'green3', "skyblue3"))
+fig <- fig %>% add_markers()
+fig
+```
