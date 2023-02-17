@@ -1,0 +1,45 @@
+---
+title: "Ames Exploratory Data Analysis"
+author: "Mike Calabro"
+format: html
+editor: visual
+execute:
+  message: FALSE
+  warning: FALSE
+---
+
+## AMES Housing Data
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(janitor)
+library(stringr)
+library(kableExtra)
+library(scales)
+
+ames <- ames
+
+ames %>% head() %>% 
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{r}
+ames <- ames %>%
+  clean_names()
+
+ames %>%
+  ggplot(aes(x = sale_price)) +
+  geom_histogram(color = "darkgray") +
+  scale_x_continuous(labels = label_dollar())
+```
+
+```{r}
+ames %>%
+  ggplot(aes(x = gr_liv_area, y = sale_price)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "lm", se = FALSE, linetype = "dashed") +
+  scale_x_continuous(labels = comma) +
+  scale_y_continuous(labels = label_dollar())
+```
