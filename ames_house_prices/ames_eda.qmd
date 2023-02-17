@@ -17,6 +17,7 @@ library(janitor)
 library(stringr)
 library(kableExtra)
 library(scales)
+library(leaflet)
 
 ames <- ames
 
@@ -42,4 +43,49 @@ ames %>%
   geom_smooth(method = "lm", se = FALSE, linetype = "dashed") +
   scale_x_continuous(labels = comma) +
   scale_y_continuous(labels = label_dollar())
+```
+
+```{r}
+ames %>%
+  mutate(neighborhood = str_sub(neighborhood, 1, 20)) %>%
+  ggplot(aes(x = sale_price, y = reorder(neighborhood, sale_price, FUN = median))) +
+  geom_boxplot() +
+  scale_x_continuous(labels = label_dollar()) +
+  labs(y = "Neighborhood (Name Shortened)")
+```
+
+```{r}
+ames %>%
+  ggplot(aes(x = gr_liv_area, y = sale_price, color = overall_cond)) +
+  geom_point(alpha = 0.3) +
+  scale_x_continuous(labels = comma) +
+  scale_y_continuous(labels = label_dollar()) +
+  geom_smooth(aes(color = overall_cond), method = "lm", se = FALSE)
+```
+
+```{r}
+ames <- 
+ames %>%
+  mutate(price_per_sq_ft = sale_price / gr_liv_area)
+
+ames %>%
+  ggplot(aes(x = price_per_sq_ft)) +
+  geom_histogram(color = "darkgray")
+```
+
+```{r}
+ames %>%
+  mutate(neighborhood = str_sub(neighborhood, 1, 20)) %>%
+  ggplot(aes(x = price_per_sq_ft, y = reorder(neighborhood, price_per_sq_ft, FUN = median))) +
+  geom_boxplot() +
+  scale_x_continuous(labels = label_dollar()) +
+  labs(y = "Neighborhood (Name Shortened)")
+
+```
+
+```{r}
+ames %>%
+  mutate(neighborhood = str_sub(neighborhood, 1, 15)) %>%
+  ggplot(aes(x = longitude, y = latitude, color = neighborhood)) +
+  geom_point(alpha = 0.5)
 ```
