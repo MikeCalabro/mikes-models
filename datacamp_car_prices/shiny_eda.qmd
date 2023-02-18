@@ -1,0 +1,64 @@
+---
+title: "Shiny EDA"
+author: "Mike Calabro"
+format: html
+server: shiny
+execute:
+  message: FALSE
+  warning: FALSE
+---
+
+```{r}
+#| context: server
+library(tidyverse)
+library(janitor)
+library(scales)
+library(DT)
+
+raw_data <- read_csv('toyota.csv')
+
+data <- raw_data %>%
+  clean_names() %>%
+  arrange(desc(price))
+```
+
+## The Data
+
+```{r}
+#| panel: fill
+div(DT::DTOutput("table"), style="font-size: 70%")
+```
+
+```{r}
+#| context: server
+output$table <- DT::renderDT(data)
+
+```
+
+## Histogram of 2 Key Variables - Price and Mileage
+
+```{r}
+#| panel: input
+sliderInput("hist_bins", "Number of bins:", 
+            min = 2, max = 50, value = 30)
+selectInput("hist_xvar", "Select X Variable",
+            choices = c("price", "mileage"),
+            selected = "price")
+```
+
+```{r}
+#| panel: fill
+plotOutput("hist")
+```
+
+```{r}
+#| context: server
+output$hist <- renderPlot({
+   data %>%
+    ggplot(aes(x = !!sym(input$hist_xvar))) +
+    geom_histogram(bins = input$hist_bins) +
+    scale_x_continuous(labels = comma) +
+    theme(axis.text = element_text(size = 15),
+          axis.title = element_text(size = 18))
+})
+```

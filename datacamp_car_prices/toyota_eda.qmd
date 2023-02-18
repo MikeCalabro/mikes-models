@@ -1,0 +1,32 @@
+---
+title: "Toyota EDA"
+author: "Mike Calabro"
+format: html
+editor: visual
+execute:
+  message: FALSE
+  warning: FALSE
+---
+
+## The Data
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(janitor)
+library(stringr)
+library(lubridate)
+library(knitr)
+library(kableExtra)
+raw_data <- 
+  read_csv('toyota.csv') 
+
+data <- 
+  raw_data %>% 
+  clean_names()
+
+data %>%
+  head() %>%
+  kable() %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
